@@ -1,7 +1,7 @@
 class Support {
     constructor() {
         // Khởi tạo AudioContext một lần và tái sử dụng
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        this.audioContext = new (globalThis.AudioContext || globalThis.webkitAudioContext)();
     }
 
     // Phát âm thanh thông báo

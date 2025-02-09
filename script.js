@@ -1,11 +1,11 @@
-import OKXApi from './okxApi.js';
+import { executeOrder } from './okxApi.js';
 import support from './suport.js';
 import orderManager from './order.js';
 import lowTableManager from './lowTable.js';
 import targetTableManager from './targetTable.js';
 
 // Khởi tạo biến global cho OKX API
-let okxApi = null;
+const okxApi = null;
 
 document.addEventListener("DOMContentLoaded", function() {
 	console.log('DOM loaded');
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Thêm event listener cho checkbox
     const tradingCheckbox = document.getElementById("toggleSwitch");
-    tradingCheckbox.addEventListener("change", (e) => {
+    tradingCheckbox.addEventListener("change", () => {
         toggleTrading();
     });
 

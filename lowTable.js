@@ -59,7 +59,7 @@ class LowTableManager {
         const saveAsBtn = this.layout.querySelector('#saveAsLowTable');
         const loadBtn = this.layout.querySelector('#loadLowTable');
         const fileInput = this.layout.querySelector('#fileInputLowTable');
-        const changeMinCheckbox = this.layout.querySelector('#changeMin');
+        const _changeMinCheckbox = this.layout.querySelector('#changeMin');
 
         clearBtn.addEventListener('click', () => this.clearLowTable());
         addBtn.addEventListener('click', () => this.addLowRow());
