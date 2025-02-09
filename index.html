@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKX Coin Trading</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Layout 1: API key input -->
+    <div id="layout1">
+        <input type="text" id="apiKey" placeholder="Enter API Key">
+        <input type="text" id="secretKey" placeholder="Enter Secret Key">
+        <input type="password" id="passphrase" placeholder="Enter Passphrase">
+        <button id="saveApiKey">Save</button>
+		<button id="saveAsApiKey">Save As</button>
+		<button id="loadApiKey">Load</button>
+		<input type="file" id="fileInput" style="display: none;">
+    </div>
+
+	<div id="layout2">
+        <h2>OKX Token Price Checker</h2>
+        <!-- Input for token name -->
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="text" id="tokenName" placeholder="Enter token name (e.g., BTC-USDT)">
+            <p style="margin: 0;">Current Price: <span id="tokenPrice">-</span></p>
+            <label style="display: flex; align-items: center; gap: 5px;">
+                <input type="checkbox" id="toggleSwitch">
+                Bật/Tắt
+            </label>
+        </div>
+        <!-- Thêm input và button cho update interval -->
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="number" id="updateInterval" placeholder="Update interval (ms)">
+            <button id="saveInterval">Save Interval</button>
+        </div>
+    </div>
+
+    <!-- Container cho các bảng -->
+    <div id="tables-container" class="tables-layout">
+        <div id="order-table-container"></div>
+        <div id="low-table-container"></div>
+        <div id="target-table-container"></div>
+    </div>
+
+    <!-- Layout 7: Cài đặt giao dịch tự động -->
+    <div id="layout7">
+        <h2>Cài đặt giao dịch tự động</h2>
+        <div class="auto-trade-settings">
+            <div class="input-group">
+                <label>Biên độ giá bán (%):</label>
+                <input type="number" id="marginPercentage" value="10">
+            </div>
+            <div class="input-group">
+                <label>Giá cơ sở (USDT):</label>
+                <input type="number" id="basePrice" value="10">
+            </div>
+            <div class="input-group">
+                <label>Số lượng token:</label>
+                <input type="number" id="tokenAmount" value="100">
+            </div>
+            <div class="input-group">
+                <label>Trạng thái:</label>
+                <select id="enumStatus">
+                    <option value="0">Đã mua</option>
+                    <option value="1">Đã bán</option>
+                </select>
+            </div>
+            <table id="logicTable">
+                <thead>
+                    <tr>
+                        <th>Loại</th>
+                        <th>Logic chính (d)</th>
+                        <th>Logic đối lập (a)</th>
+                        <th>Giá kích hoạt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="sellLogic">
+                        <td>Bán</td>
+                        <td id="d_b">1</td>
+                        <td id="a_b">-1</td>
+                        <td id="sellPrice">0</td>
+                    </tr>
+                    <tr id="buyLogic">
+                        <td>Mua</td>
+                        <td id="d_m">1</td>
+                        <td id="a_m">-1</td>
+                        <td id="buyPrice">0</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="startAutoTrade">Bắt đầu giao dịch tự động</button>
+        </div>
+    </div>
+    <!-- Thêm layout mới cho lịch sử giao dịch -->
+    <div id="layout6">
+        <h2>Lịch sử giao dịch</h2>
+        <div class="history-controls">
+            <button id="clearHistory">Xóa lịch sử</button>
+            <button id="saveHistory">Lưu lịch sử</button>
+        </div>
+        <div id="orderHistory" class="order-history">
+            <!-- Lịch sử giao dịch sẽ được thêm vào đây -->
+        </div>
+    </div>
+
+    
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
