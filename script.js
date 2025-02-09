@@ -3,6 +3,7 @@ import support from './suport.js';
 import orderManager from './order.js';
 import lowTableManager from './lowTable.js';
 import targetTableManager from './targetTable.js';
+import autoTradeManager from './autoTrade.js';
 
 // Khởi tạo biến global cho OKX API (chỉ khai báo một lần)
 let okxApi = null;  // Đổi const thành let vì chúng ta sẽ gán giá trị sau
@@ -13,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	const containers = {
 		order: document.getElementById('order-table-container'),
 		low: document.getElementById('low-table-container'),
-		target: document.getElementById('target-table-container')
+		target: document.getElementById('target-table-container'),
+		autoTrade: document.getElementById('auto-trade-container')
 	};
 
 	// Log để kiểm tra containers
@@ -41,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function() {
 					break;
 				case 'target':
 					targetTableManager.mount(container);
+					break;
+				case 'autoTrade':
+					autoTradeManager.mount(container);
 					break;
 			}
 			console.log(`Mounted ${name} successfully`);

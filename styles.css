@@ -350,3 +350,37 @@ table input[type="checkbox"] {
     width: 100%;
     min-height: 100px;
 }
+
+.auto-trade-settings table {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.auto-trade-settings td {
+    padding: 8px;
+}
+
+.auto-trade-settings label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.auto-trade-settings input,
+.auto-trade-settings select {
+    width: 100%;
+    padding: 5px;
+}
+
+#startAutoTrade {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#startAutoTrade:hover {
+    background-color: #45a049;
+}
