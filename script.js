@@ -392,13 +392,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         const rowToUpdate = Array.from(tableToUpdate.rows)[rowNumber - 1];
                         if (rowToUpdate) {
-                            const currentOrder = parseInt(rowToUpdate.cells[0].textContent);
-							Array.from(tableToUpdate.rows).forEach(row => {
-								row.cells[2].textContent = varTokenPrice;
-							});
+                            const _currentOrder = parseInt(rowToUpdate.cells[0].textContent);
+                            Array.from(tableToUpdate.rows).forEach(row => {
+                                row.cells[2].textContent = varTokenPrice;
+                            });
                             rowToUpdate.cells[0].textContent = orderChange;
                             support.showAlert(`Updated order in ${selectedTable} row ${rowNumber} to ${orderChange}`);
-                            targetRow.cells[1].textContent = -rowNumber; // Gán rowNumber về -rowNumber sau khi thực hiện xong
+                            targetRow.cells[1].textContent = -rowNumber;
                         }
                     }
                 })
@@ -601,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 throw new Error("API chưa được khởi tạo");
             }
 
-            const result = await okxApi.executeOrder({
+            await okxApi.executeOrder({
                 token: tokenName,
                 ...orderParams
             });
