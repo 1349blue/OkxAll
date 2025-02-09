@@ -1,4 +1,4 @@
-import { executeOrder as _executeOrder } from './okxApi.js';
+import okxApi from './okxApi.js';
 import support from './suport.js';
 import orderManager from './order.js';
 import lowTableManager from './lowTable.js';
