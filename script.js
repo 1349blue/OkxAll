@@ -1,4 +1,4 @@
-import { executeOrder } from './okxApi.js';
+import { executeOrder as _executeOrder } from './okxApi.js';
 import support from './suport.js';
 import orderManager from './order.js';
 import lowTableManager from './lowTable.js';
@@ -101,8 +101,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	let tokenName = '';
     let varTokenPrice = 0;
-    let orders = [];
-    let conditions = [];
+    const _orders = [];
+    const _conditions = [];
 	let updateInterval = 1000; // Default interval
 
     // Thêm biến toàn cục để theo dõi trạng thái của toggle
@@ -251,65 +251,40 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Save condition table to JSON file
 	function saveAsLowTable() {
-		const lowTableBody = document.querySelector("#LowTable tbody");
-		const rows = Array.from(lowTableBody.rows);
-		const lowData = rows.map(row => {
-			return {
-				order: parseInt(row.cells[0].textContent),
-				logic: row.cells[1].textContent,
-				targetPrice: parseFloat(row.cells[2].textContent),
-				percentage: parseFloat(row.cells[3].textContent),
-				tdMode: row.cells[4].textContent,
-				side: row.cells[5].querySelector('select').value,
-				ordType: row.cells[6].querySelector('select').value,
-				sz: row.cells[7].textContent,
-				tgtCcy: row.cells[8].querySelector('select').value
-			};
-		});
-		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lowData));
-		const downloadAnchorNode = document.createElement('a');
-		downloadAnchorNode.setAttribute("href", dataStr);
-		downloadAnchorNode.setAttribute("download", "conditions.json");
-		document.body.appendChild(downloadAnchorNode);
-		downloadAnchorNode.click();
-		downloadAnchorNode.remove();
+		try {
+			const lowTableBody = document.querySelector("#LowTable tbody");
+			if (!lowTableBody) {
+				throw new Error("Low table body not found");
+			}
+
+			const rows = Array.from(lowTableBody.rows);
+			const lowData = rows.map(row => {
+				return {
+					order: parseInt(row.cells[0].textContent) || 0,
+					logic: row.cells[1].querySelector('select')?.value || '',
+					targetPrice: parseFloat(row.cells[2].textContent) || 0, 
+					percentage: parseFloat(row.cells[3].textContent) || 0,
+					tdMode: row.cells[4].textContent || '',
+					side: row.cells[5].querySelector('select')?.value || '',
+					ordType: row.cells[6].querySelector('select')?.value || '',
+					sz: row.cells[7].textContent || '0',
+					tgtCcy: row.cells[8].querySelector('select')?.value || ''
+				};
+			});
+
+			const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lowData, null, 2));
+			const downloadAnchorNode = document.createElement('a');
+			downloadAnchorNode.setAttribute("href", dataStr);
+			downloadAnchorNode.setAttribute("download", "conditions.json");
+			document.body.appendChild(downloadAnchorNode);
+			downloadAnchorNode.click();
+			downloadAnchorNode.remove();
+			support.showAlert("Low table saved successfully");
+		} catch (err) {
+			console.error("Error saving low table:", err);
+			support.showAlert("Error saving low table");
+		}
 	}
-    // Save condition table to JSON file with better formatting and error handling
-    function saveAsLowTable() {
-        try {
-            const lowTableBody = document.querySelector("#LowTable tbody");
-            if (!lowTableBody) {
-                throw new Error("Low table body not found");
-            }
-
-            const rows = Array.from(lowTableBody.rows);
-            const lowData = rows.map(row => {
-                return {
-                    order: parseInt(row.cells[0].textContent) || 0,
-                    logic: row.cells[1].querySelector('select')?.value || '',
-                    targetPrice: parseFloat(row.cells[2].textContent) || 0, 
-                    percentage: parseFloat(row.cells[3].textContent) || 0,
-                    tdMode: row.cells[4].textContent || '',
-                    side: row.cells[5].querySelector('select')?.value || '',
-                    ordType: row.cells[6].querySelector('select')?.value || '',
-                    sz: row.cells[7].textContent || '0',
-                    tgtCcy: row.cells[8].querySelector('select')?.value || ''
-                };
-            });
-
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lowData, null, 2));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "conditions.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-            support.showAlert("Low table saved successfully");
-        } catch (err) {
-            console.error("Error saving low table:", err);
-            support.showAlert("Error saving low table");
-        }
-    }
 
     // Load condition table from JSON file
 	function loadLowTable(file) {
@@ -441,7 +416,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const realPrice = targetPrice * (1 + percentageValue);
             
             if (order > 0 && evaluateCondition(logic, realPrice, varTokenPrice)) {
-                executeOrder({
+                _executeOrder({
                     apiKey: apiKeyInput.value,
                     secretKey: secretKeyInput.value,
                     passphrase: passphraseInput.value,
@@ -472,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					try {
 						const balance = await getTokenBalance();
 						if (balance > 0) {
-							executeOrder({
+							_executeOrder({
 								apiKey: apiKeyInput.value,
 								secretKey: secretKeyInput.value,
 								passphrase: passphraseInput.value,
@@ -491,7 +466,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 				} else {
 					
-					executeOrder({
+					_executeOrder({
 						apiKey: apiKeyInput.value,
 						secretKey: secretKeyInput.value,
 						passphrase: passphraseInput.value,
@@ -620,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     */
-    async function executeOrder(orderParams) {
+    async function _executeOrder(orderParams) {
         try {
             if (!okxApi) {
                 throw new Error("API chưa được khởi tạo");
@@ -764,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
 	
 	// thông báo
-	function showAlert(message) {
+	function _showAlert(message) {
             const alertBox = document.createElement('div');
             alertBox.className = 'custom-alert';
             alertBox.textContent = message;
@@ -787,7 +762,7 @@ document.addEventListener("DOMContentLoaded", function() {
             event.target.closest("tr").remove();
         } else if (event.target.classList.contains("actOrder")) {
             const row = event.target.closest("tr");
-            executeOrder({
+            _executeOrder({
                     apiKey: apiKeyInput.value,
                     secretKey: secretKeyInput.value,
                     passphrase: passphraseInput.value,
@@ -801,7 +776,7 @@ document.addEventListener("DOMContentLoaded", function() {
             event.target.closest("tr").remove();
         } else if (event.target.classList.contains("actLow")) {
             const row = event.target.closest("tr");
-            executeOrder({
+            _executeOrder({
 					apiKey: apiKeyInput.value,
                     secretKey: secretKeyInput.value,
                     passphrase: passphraseInput.value,
@@ -1026,7 +1001,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (currentPrice < sellPrice && d_b > 0) {
             // Thực hiện lệnh bán
             const balance = await getTokenBalance();
-            executeOrder({
+            _executeOrder({
                     apiKey: apiKeyInput.value,
                     secretKey: secretKeyInput.value,
                     passphrase: passphraseInput.value,
@@ -1056,7 +1031,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (enumStatus === 1 && currentPrice > buyPrice && a_m > 0) {
             // Thực hiện lệnh mua
             
-            executeOrder({
+            _executeOrder({
                 apiKey: apiKeyInput.value,
                 secretKey: secretKeyInput.value,
                 passphrase: passphraseInput.value,
