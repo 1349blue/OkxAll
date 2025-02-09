@@ -1,11 +1,11 @@
-import okxApi from './okxApi.js';
+import OKXApi from './okxApi.js';  // Import class OKXApi
 import support from './suport.js';
 import orderManager from './order.js';
 import lowTableManager from './lowTable.js';
 import targetTableManager from './targetTable.js';
 
-// Khởi tạo biến global cho OKX API
-const okxApi = null;
+// Khởi tạo biến global cho OKX API (chỉ khai báo một lần)
+let okxApi = null;  // Đổi const thành let vì chúng ta sẽ gán giá trị sau
 
 document.addEventListener("DOMContentLoaded", function() {
 	console.log('DOM loaded');
